@@ -8,17 +8,16 @@ other Thorlabs power meters).
 ```python
 >>> import PM16
 >>> pm = PM16("/dev/usbtmc0") # Replace with whatever USBTMC port the meter is attached to
->>> pm.read() # Power as a float, in W
+>>> pm.power() # Power as a float, in W
 1.5692888e-02
 >>> values = pm.stream() # Poll the power meter until keyboard interrupt
-15.365363 mW
-15.674598 mW
-15.663893 mW
-15.513761 mW
+2.6368066 mW
+2.7559481 mW
+2.8252213 mW
 ...
 # keyboard interrupt
 >>> values
-[1.5365363e-02, 1.5674598e-02, 1.5663893e-02, 1.5513761e-02, ...]
+[0.0026368066, 0.0027559481, 0.0028252213, ...]
 ```
 
 ## Known issues
