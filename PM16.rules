@@ -1,0 +1,1 @@
+KERNEL=="usbtmc[0-9]*", ATTRS{manufacturer}=="Thorlabs", ATTRS{product}=="PM16-121", GROUP="usbtmc", SYMLINK+="PowerMeter"
