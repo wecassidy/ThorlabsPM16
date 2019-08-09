@@ -8,6 +8,8 @@ other Thorlabs power meters).
 ```python
 >>> import PM16
 >>> pm = PM16("/dev/usbtmc0") # Replace with whatever USBTMC port the meter is attached to
+Current wavelength: 780 nm
+>>> pm.set_wavelength(684) # Change wavelength to 684 nm
 >>> pm.power() # Power as a float, in W
 1.5692888e-02
 >>> values = pm.stream() # Poll the power meter until keyboard interrupt
@@ -21,9 +23,9 @@ other Thorlabs power meters).
 ```
 
 ## Known issues
-reads and writes to the power meter will sometimes start
-timing out. The only solution to this seems to be to unplug and plug
-back in the power meter and re-initialize the PM16 object.
+Reading from the power meter when there is nothing available leads to
+that read and any further commands failing with a `TimeoutError`. To
+fix this, unplug the power meter and re-initialize the `PM16` object.
 
 Note: Thorlabs, as far as I can tell, doesn't publicly document the
 USBTMC interface for their power meters. The USBTMC commands in this

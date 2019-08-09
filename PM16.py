@@ -7,6 +7,8 @@ other Thorlabs power meters).
 How to use:
 >>> import PM16
 >>> pm = PM16("/dev/usbtmc0") # Replace with whatever USBTMC port the meter is attached to
+Current wavelength: 780 nm
+>>> pm.set_wavelength(684) # Change wavelength to 684 nm
 >>> pm.power() # Power as a float, in W
 1.5692888e-02
 >>> values = pm.stream() # Poll the power meter until keyboard interrupt
@@ -48,8 +50,8 @@ class USBTMC:
         return os.read(self.FILE, length).decode("utf-8")
 
     def query(self, command, length = 4000):
-    	self.write(command)
-    	return self.read(length)
+        self.write(command)
+        return self.read(length)
 
     def getName(self):
         self.write("*IDN?")
@@ -68,6 +70,7 @@ class PM16(USBTMC):
 
     def __init__(self, device):
         super().__init__(device)
+        print("Current wavelength: {:.0f} nm".format(self.get_wavelength()))
 
     def power(self):
         """Read the power from the meter in Watts."""
@@ -99,3 +102,17 @@ class PM16(USBTMC):
                 break
 
         return log
+
+    def set_wavelength(self, wavelength):
+        """
+        Set the wavelength of the power meter. Acceptable range:
+        400-1100 nm.
+        """
+        if not 400 <= wavelength <= 1100:
+            raise ValueError("{} nm is not in [400, 1100] nm.".format(wavelength))
+
+        self.write("SENS:CORR:WAV {}".format(wavelength))
+
+    def get_wavelength(self):
+        """Get the current wavelength of the power meter, in nm."""
+        return float(self.query("SENS:CORR:WAV?"))
