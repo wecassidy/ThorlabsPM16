@@ -20,10 +20,17 @@ class FakePM16(PM16.PM16):
     def __init__(self, device):
         self.device = device
         self.FILE = None
+        self.wavelength = 780
 
     def power(self):
         """Retrun a random reading between 0 and 1 Watt"""
         return random.uniform(0, 1)
+
+    def get_wavelength(self):
+        return self.wavelength
+
+    def set_wavelength(self, wavelength):
+        self.wavelength = wavelength
 
 class App(Gtk.Application):
     def __init__(self):
@@ -63,7 +70,6 @@ class App(Gtk.Application):
                 except StopIteration:
                     break
                 reading *= 1e3
-
 
         output_label = self.builder.get_object("power-output")
         output_label.set_text("{} {}W".format(reading, prefix))
