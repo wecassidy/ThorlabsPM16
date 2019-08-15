@@ -9,7 +9,7 @@ import sys
 
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gio, Gtk
+from gi.repository import Gio, GLib, Gtk
 
 import PM16
 
@@ -35,6 +35,8 @@ class App(Gtk.Application):
 
         self.builder = None
 
+        self.pm = FakePM16("")
+
     def do_activate(self):
         self.builder = Gtk.Builder()
         self.builder.add_from_file("layout.glade")
@@ -44,6 +46,16 @@ class App(Gtk.Application):
         window.set_application(self)
         window.maximize()
         window.show()
+
+        GLib.timeout_add(100, self.update_reading) # Update the reading every 100 ms
+
+    def update_reading(self):
+        reading = self.pm.power()
+
+        output_label = self.builder.get_object("power-output")
+        output_label.set_text("{} W".format(reading))
+
+        return True # Keep the timeout ticking
 
     def on_destroy(self, *args):
         Gtk.main_quit()
