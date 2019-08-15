@@ -11,6 +11,20 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gio, Gtk
 
+import PM16
+
+import random
+class FakePM16(PM16.PM16):
+    """Generate a stream of random noise for testing."""
+
+    def __init__(self, device):
+        self.device = device
+        self.FILE = None
+
+    def power(self):
+        """Retrun a random reading between 0 and 1 Watt"""
+        return random.uniform(0, 1)
+
 class App(Gtk.Application):
     def __init__(self):
         Gtk.Application.__init__(
