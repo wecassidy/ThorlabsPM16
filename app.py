@@ -52,8 +52,21 @@ class App(Gtk.Application):
     def update_reading(self):
         reading = self.pm.power()
 
+        # Format the output to nice units
+        prefix = ""
+        if reading < 1:
+            unit_prefixes = iter(("m", "μ"))
+            while reading < 1:
+                # If there is a prefix for a 1e3 step down
+                try:
+                    prefix = next(unit_prefixes)
+                except StopIteration:
+                    break
+                reading *= 1e3
+
+
         output_label = self.builder.get_object("power-output")
-        output_label.set_text("{} W".format(reading))
+        output_label.set_text("{} {}W".format(reading, prefix))
 
         return True # Keep the timeout ticking
 
