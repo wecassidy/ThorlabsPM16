@@ -2,6 +2,12 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAdjustment" id="wavelength-adjust">
+    <property name="lower">400</property>
+    <property name="upper">1100</property>
+    <property name="step_increment">10</property>
+    <property name="page_increment">100</property>
+  </object>
   <object class="GtkWindow" id="main-window">
     <property name="can_focus">False</property>
     <signal name="destroy-event" handler="on_destroy" swapped="no"/>
@@ -45,9 +51,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="input_purpose">number</property>
+                <property name="adjustment">wavelength-adjust</property>
                 <property name="numeric">True</property>
+                <property name="update_policy">if-valid</property>
                 <property name="value">780</property>
-                <signal name="value-changed" handler="wavelength_set" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

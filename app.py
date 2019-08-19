@@ -49,6 +49,9 @@ class App(Gtk.Application):
         self.builder.add_from_file("layout.glade")
         self.builder.connect_signals(self)
 
+        wavelength_chooser = self.builder.get_object("wavelength-chooser")
+        wavelength_chooser.set_value(self.pm.get_wavelength())
+
         window = self.builder.get_object("main-window")
         window.set_application(self)
         window.maximize()
@@ -74,13 +77,14 @@ class App(Gtk.Application):
         output_label = self.builder.get_object("power-output")
         output_label.set_text("{} {}W".format(reading, prefix))
 
+        wavelength_chooser = self.builder.get_object("wavelength-chooser")
+        if self.pm.get_wavelength() != wavelength_chooser.get_value():
+            self.pm.set_wavelength(wavelength_chooser.get_value())
+
         return True # Keep the timeout ticking
 
     def on_destroy(self, *args):
         Gtk.main_quit()
-
-    def wavelength_set(self, *args):
-        print(args)
 
 if __name__ == "__main__":
     app = App()
