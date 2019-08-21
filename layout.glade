@@ -23,6 +23,9 @@
           <object class="GtkLabel" id="power-output">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <attributes>
+              <attribute name="scale" value="10"/>
+            </attributes>
           </object>
           <packing>
             <property name="expand">True</property>

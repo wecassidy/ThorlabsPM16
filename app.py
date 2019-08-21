@@ -42,7 +42,7 @@ class App(Gtk.Application):
 
         self.builder = None
 
-        self.pm = FakePM16("")
+        self.pm = PM16.PM16("/dev/PowerMeter")
 
     def do_activate(self):
         self.builder = Gtk.Builder()
@@ -75,7 +75,7 @@ class App(Gtk.Application):
                 reading *= 1e3
 
         output_label = self.builder.get_object("power-output")
-        output_label.set_text("{} {}W".format(reading, prefix))
+        output_label.set_text("{:.3f} {}W".format(reading, prefix))
 
         wavelength_chooser = self.builder.get_object("wavelength-chooser")
         if self.pm.get_wavelength() != wavelength_chooser.get_value():
@@ -85,6 +85,10 @@ class App(Gtk.Application):
 
     def on_destroy(self, *args):
         Gtk.main_quit()
+        self.pm.close()
+
+    def on_log_set(self, *args):
+        print(args)
 
 if __name__ == "__main__":
     app = App()
